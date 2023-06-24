@@ -1,6 +1,6 @@
 package org.udemy.service;
 
-import org.udemy.BankAccount;
+import org.udemy.domain.BankAccount;
 import org.udemy.logging.ConsoleLogger;
 import org.udemy.repository.BankAccountRepository;
 

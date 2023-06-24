@@ -1,6 +1,6 @@
 package org.udemy.repository;
 
-import org.udemy.BankAccount;
+import org.udemy.domain.BankAccount;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

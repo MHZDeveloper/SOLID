@@ -1,6 +1,6 @@
-package org.udemy;
+package org.udemy.domain;
 
-public class BankAccount {
+public abstract class BankAccount {
 
     private int id;
     private double balance;
