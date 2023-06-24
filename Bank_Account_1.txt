@@ -1,0 +1,5 @@
+### Bank Account 1 Record ###
+BALANCE : 500.0
+HOLDER : John Doe
+EMAIL : john.doe@mail.com
+TIMESTAMP : 24/06/2023 15:11:00
