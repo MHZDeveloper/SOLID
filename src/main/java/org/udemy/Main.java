@@ -2,7 +2,8 @@ package org.udemy;
 
 import org.udemy.domain.BankAccount;
 import org.udemy.domain.CheckingBankAccount;
-import org.udemy.domain.TaxCalculator;
+import org.udemy.domain.taxes.TaxCalculator;
+import org.udemy.domain.taxes.TaxCalculatorFactory;
 import org.udemy.logging.ConsoleLogger;
 import org.udemy.repository.BankAccountFileSerializer;
 import org.udemy.repository.BankAccountRepository;
@@ -23,7 +24,8 @@ public class Main {
         bankAccountService.save(bankAccount);
 
         // calculate annual tax
-        System.out.println(new TaxCalculator().calculateTax(bankAccount));
+        TaxCalculator taxCalculator = TaxCalculatorFactory.create(bankAccount);
+        System.out.println(taxCalculator.calculateTax(bankAccount));
     }
 
 }
