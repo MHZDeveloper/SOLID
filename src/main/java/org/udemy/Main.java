@@ -10,11 +10,13 @@ import org.udemy.repository.BankAccountFileSerializer;
 import org.udemy.repository.BankAccountRepository;
 import org.udemy.service.BankAccountService;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
+
         // init main bank account
         BankAccount mainBankAccount = new SavingsBankAccount(0, 100000, "Bank", "bank@mail.com");
 
@@ -28,6 +30,12 @@ public class Main {
         // find all bank accounts
         List<BankAccount> bankAccounts = bankAccountService.findAll();
 
+        // find all student bank accounts
+        List<StudentBankAccount> studentBankAccounts = Arrays.asList(
+                new StudentBankAccount(1,200,"child1","child@mail1.com","1234"),
+                new StudentBankAccount(2,300,"child2","child@mail2.com","5678")
+        );
+
         // withdraw taxes
         for (BankAccount bankAccount : bankAccounts) {
             TaxCalculator taxCalculator = TaxCalculatorFactory.create(bankAccount);
@@ -36,10 +44,8 @@ public class Main {
         }
 
         // reload phone balance for students
-        for (BankAccount bankAccount : bankAccounts) {
-            if (bankAccount instanceof StudentBankAccount)
-                ((StudentBankAccount) bankAccount).transferToMobile(15);
-        }
+        for (StudentBankAccount studentBankAccount : studentBankAccounts)
+            studentBankAccount.transferToMobile(15);
 
         // save
         for (BankAccount bankAccount : bankAccounts)
