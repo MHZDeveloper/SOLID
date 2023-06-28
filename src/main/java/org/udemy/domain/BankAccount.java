@@ -1,12 +1,18 @@
 package org.udemy.domain;
 
-public abstract class BankAccount {
+import org.udemy.domain.transaction.Transaction;
+import org.udemy.domain.transaction.TransactionType;
 
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class BankAccount {
     private int id;
     private double balance;
     private String holder;
     private String email;
-    protected String mobileNumber;
+    private String mobileNumber;
+    private List<Transaction> transactions = new ArrayList<>();
 
     public BankAccount(int id, double balance, String holder, String email) {
         this.id = id;
@@ -23,17 +29,14 @@ public abstract class BankAccount {
         this.mobileNumber = mobileNumber;
     }
 
-    public void deposit(double amount) {
-        balance += amount;
-    }
-
     public void withdraw(double amount) {
-        balance -= amount;
+        balance-=amount;
+        this.transactions.add(new Transaction(TransactionType.WITHDRAW, amount));
     }
 
-    public void transfer(BankAccount bankAccount, double amount) {
-        this.withdraw(amount);
-        bankAccount.deposit(amount);
+    public void deposit(double amount) {
+        balance+=amount;
+        this.transactions.add(new Transaction(TransactionType.DEPOSIT, amount));
     }
 
     public int getId() {
@@ -55,4 +58,9 @@ public abstract class BankAccount {
     public String getMobileNumber() {
         return mobileNumber;
     }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
 }
+
