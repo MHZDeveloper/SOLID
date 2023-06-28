@@ -6,7 +6,7 @@ import org.udemy.domain.transaction.Transaction;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class BankStatement implements ExportableFormat{
+public class BankStatement implements ExportableTxt {
 
     private BankAccount bankAccount;
 
@@ -35,15 +35,5 @@ public class BankStatement implements ExportableFormat{
                 "Transactions : " +
                 System.lineSeparator()+
                 transactionsRecord;
-    }
-
-    @Override
-    public byte[] toPdf() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public String toJson() {
-        throw new UnsupportedOperationException();
     }
 }
