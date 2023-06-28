@@ -5,6 +5,7 @@ import org.udemy.logging.ConsoleLogger;
 import org.udemy.repository.BankAccountRepository;
 
 import java.io.IOException;
+import java.util.List;
 
 public class BankAccountService {
 
@@ -24,5 +25,10 @@ public class BankAccountService {
         } catch (IOException exception) {
             this.consoleLogger.writeError("ERROR : could not save Bank Account with ID " + bankAccount.getId(),exception);
         }
+    }
+
+    public List<BankAccount> findAll() {
+        consoleLogger.writeInfo("Getting all Bank Accounts");
+        return bankAccountRepository.findAll();
     }
 }

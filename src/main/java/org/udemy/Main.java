@@ -1,7 +1,8 @@
 package org.udemy;
 
 import org.udemy.domain.BankAccount;
-import org.udemy.domain.CheckingBankAccount;
+import org.udemy.domain.SavingsBankAccount;
+import org.udemy.domain.StudentBankAccount;
 import org.udemy.domain.taxes.TaxCalculator;
 import org.udemy.domain.taxes.TaxCalculatorFactory;
 import org.udemy.logging.ConsoleLogger;
@@ -9,10 +10,14 @@ import org.udemy.repository.BankAccountFileSerializer;
 import org.udemy.repository.BankAccountRepository;
 import org.udemy.service.BankAccountService;
 
+import java.util.List;
+
 public class Main {
 
     public static void main(String[] args) {
-        BankAccount bankAccount = new CheckingBankAccount(1,500,"John Doe", "john.doe@mail.com");
+        // init main bank account
+        BankAccount mainBankAccount = new SavingsBankAccount(0, 100000, "Bank", "bank@mail.com");
+
         // init necessary classes
         BankAccountFileSerializer bankAccountSerializer = new BankAccountFileSerializer();
         BankAccountRepository bankAccountRepository = new BankAccountRepository(bankAccountSerializer);
@@ -20,12 +25,25 @@ public class Main {
         ConsoleLogger consoleLogger = new ConsoleLogger();
         BankAccountService bankAccountService = new BankAccountService(bankAccountRepository,consoleLogger);
 
-        // save
-        bankAccountService.save(bankAccount);
+        // find all bank accounts
+        List<BankAccount> bankAccounts = bankAccountService.findAll();
 
-        // calculate annual tax
-        TaxCalculator taxCalculator = TaxCalculatorFactory.create(bankAccount);
-        System.out.println(taxCalculator.calculateTax(bankAccount));
+        // withdraw taxes
+        for (BankAccount bankAccount : bankAccounts) {
+            TaxCalculator taxCalculator = TaxCalculatorFactory.create(bankAccount);
+            double amount = taxCalculator.calculateTax(bankAccount);
+            bankAccount.transfer(mainBankAccount, amount);
+        }
+
+        // reload phone balance for students
+        for (BankAccount bankAccount : bankAccounts) {
+            if (bankAccount instanceof StudentBankAccount)
+                ((StudentBankAccount) bankAccount).transferToMobile(15);
+        }
+
+        // save
+        for (BankAccount bankAccount : bankAccounts)
+            bankAccountService.save(bankAccount);
     }
 
 }
