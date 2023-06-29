@@ -3,12 +3,12 @@ package org.udemy.service.notification;
 import org.udemy.domain.BankAccount;
 import org.udemy.logging.ConsoleLogger;
 
-public class EmailService {
+public class EmailService implements NotificationService{
 
     private ConsoleLogger consoleLogger;
 
-    public EmailService() {
-        consoleLogger = new ConsoleLogger();
+    public EmailService(ConsoleLogger consoleLogger) {
+        this.consoleLogger = consoleLogger;
     }
 
     public void notify(BankAccount bankAccount) {

@@ -2,9 +2,8 @@ package org.udemy.service.payment;
 
 import org.udemy.domain.SavingsBankAccount;
 import org.udemy.logging.ConsoleLogger;
-import org.udemy.repository.BankAccountFileSerializer;
 import org.udemy.repository.BankAccountRepository;
-import org.udemy.service.notification.EmailService;
+import org.udemy.service.notification.NotificationService;
 
 import java.util.List;
 
@@ -14,21 +13,20 @@ public class PaymentService {
 
     private ConsoleLogger consoleLogger;
 
-    private EmailService emailService;
+    private NotificationService notificationService;
 
-    public PaymentService() {
-        BankAccountFileSerializer bankAccountFileSerializer = new BankAccountFileSerializer();
-        consoleLogger = new ConsoleLogger();
-        emailService = new EmailService();
-        bankAccountRepository = new BankAccountRepository(bankAccountFileSerializer, consoleLogger);
+    public PaymentService(BankAccountRepository bankAccountRepository, NotificationService notificationService, ConsoleLogger consoleLogger) {
+        this.bankAccountRepository = bankAccountRepository;
+        this.notificationService = notificationService;
+        this.consoleLogger = consoleLogger;
     }
 
     public void sendPayments(double amount) {
-        List<SavingsBankAccount> savingsAccounts = bankAccountRepository.findAllSavingAccounts();
+        List<SavingsBankAccount> savingsAccounts = bankAccountRepository.findAllSavingsAccounts();
         consoleLogger.writeInfo("processing payment to savings bank accounts");
         for (SavingsBankAccount bankAccount : savingsAccounts) {
             bankAccount.deposit(amount);
-            emailService.notify(bankAccount);
+            notificationService.notify(bankAccount);
         }
     }
 }
